@@ -1,12 +1,20 @@
 import requests
 import io
 from django.conf import settings
+from enum import Enum
 
 class PushoverException(Exception):
     pass
 
+class PushoverPriority(Enum):
+    LOWEST = -2
+    LOW = -1
+    NORMAL = 0
+    HIGH = 1
+    EMERGENCY = 2
+
 # message and title should be strings, attachment should be a file-like object
-def pushover_notification(user_key, message, title = None, attachment = None):
+def pushover_notification(user_key, message, title = None, attachment = None, priority = PushoverPriority.NORMAL):
     API_URL = "https://api.pushover.net/1/messages.json"
 
     if len(message) > 1024:
@@ -19,6 +27,7 @@ def pushover_notification(user_key, message, title = None, attachment = None):
     payload = {
         "token": settings.PUSHOVER_APP_TOKEN,
         "user": user_key,
+        "priority": priority,
         "message": message
     }
 

@@ -19,7 +19,7 @@ from lib.utils import save_print_snapshot, last_pic_of_print
 from app.models import Printer, Print
 from lib.integrations.telegram_bot import send_notification as send_telegram_notification
 from lib.integrations.discord import send_discord_notification
-from lib.integrations.pushover import pushover_notification, PushoverException
+from lib.integrations.pushover import pushover_notification, PushoverException, PushoverPriority
 from lib import mobile_notifications
 from lib import site
 
@@ -198,7 +198,7 @@ def send_failure_alert_pushover(printer, rotated_jpg_url, is_warning, print_paus
     body = '{}\n{}\nGo check it at: {}'.format(msg, pausing_msg, link)
 
     try:
-        pushover_notification(printer.user.pushover_user_token, body, title, photo)
+        pushover_notification(printer.user.pushover_user_token, body, title, photo, PushoverPriority.HIGH)
     except (PushoverException) as e:
         LOGGER.error(e)
 
