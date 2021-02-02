@@ -27,7 +27,7 @@ def pushover_notification(user_key, message, title = None, attachment = None, pr
     payload = {
         "token": settings.PUSHOVER_APP_TOKEN,
         "user": user_key,
-        "priority": priority,
+        "priority": priority.value,
         "message": message
     }
 
